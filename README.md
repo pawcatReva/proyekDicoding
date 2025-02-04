@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # Project Bike Sharing Dataset
-=======
-# Proyek Bike Sharing Dataset
->>>>>>> 29c88738e068ea72c229eaa66f6d8ee475f7d25f
   This repository is about the results of the Bike Sharing Dataset analysis.
   ## Background
   The bike sharing system is a new generation of traditional bicycle rental where the entire process starts from membership, rental and return.
@@ -42,11 +38,7 @@
 ├── 📁 data
 │   ├── day.csv
 │   ├── hour.csv
-<<<<<<< HEAD
 ├── notebooks.ipynb
-=======
-├── notebook.ipynb
->>>>>>> 29c88738e068ea72c229eaa66f6d8ee475f7d25f
 ├── README.md
 ├── requirements.txt
 └── url.txt
@@ -62,12 +54,12 @@ In this project I use Python version 3.13.1 and use several libraries as follows
 - streamlit==1.41.1
 
 You can install all dependencies using the ```requirements.txt``` file by running the command:
-<<<<<<< HEAD
  ```
- requirements.txt
+ pipreqs C:\coding\proyek
 ```
-=======
 
-
-
->>>>>>> 29c88738e068ea72c229eaa66f6d8ee475f7d25f
+## Running the Dashboard
+1. Clone Repository
+```
+git clone https://github.com/pawcatReva/proyekDicoding.git
+```
