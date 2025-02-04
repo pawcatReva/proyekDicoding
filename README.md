@@ -21,24 +21,23 @@
   - Casual
   - Registered
   - Cnt
+    ## Folder Structure
 
 ```
-📂 Project-Name
+📂 Proyek
+├── 📁 dashboard
+│   ├── dashboard.py
+│   ├── day_cleaned.csv
+│   ├── hour_cleaned.csv
 ├── 📁 data
-│   ├── raw_data.csv
-│   ├── processed_data.csv
-│   ├── data_cleaning.ipynb
-├── 📁 src
-│   ├── main.py
-│   ├── utils.py
-│   ├── preprocessing.py
-├── 📁 notebooks
-│   ├── EDA.ipynb
-│   ├── Model_Training.ipynb
+│   ├── day.csv
+│   ├── hour.csv
+├── notebook.ipynb
 ├── README.md
 ├── requirements.txt
-└── .gitignore
+└── url.txt
 ```
+
     ## Folder Structure 
 - Proyek
   - dashboard
