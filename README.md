@@ -22,6 +22,23 @@
   - Registered
   - Cnt
 
+```
+📂 Project-Name
+├── 📁 data
+│   ├── raw_data.csv
+│   ├── processed_data.csv
+│   ├── data_cleaning.ipynb
+├── 📁 src
+│   ├── main.py
+│   ├── utils.py
+│   ├── preprocessing.py
+├── 📁 notebooks
+│   ├── EDA.ipynb
+│   ├── Model_Training.ipynb
+├── README.md
+├── requirements.txt
+└── .gitignore
+```
     ## Folder Structure 
 - Proyek
   - dashboard
