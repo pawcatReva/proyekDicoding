@@ -38,19 +38,14 @@
 └── url.txt
 ```
 
-    ## Folder Structure 
-- Proyek
-  - dashboard
-    - dashboardd.py
-    - day_cleaned.csv
-    - hour_cleaned.csv
-  - data
-    - day_csv
-    - hour.csv
-  - notebook.ipynb
-  - README.md
-  - requirements.txt
-  - url.txt
+## Running
+# Prerequisite
+In this project I use Python version 3.13.1 and use several libraries as follows:
+- matplotlib==3.10.0
+- numpy==2.2.2
+- pandas==2.2.3
+- seaborn==0.13.2
+- streamlit==1.41.1
 
 
 
