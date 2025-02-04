@@ -23,17 +23,18 @@
   - Cnt
 
     ## Folder Structure 
-📂 Proyek
-├── 📁 dashboard
-│   ├── dashboardd.py
-│   ├── day_cleaned.csv
-│   ├── hour_cleaned.csv
-├── 📁 data
-│   ├── day.csv
-│   ├── hour.csv
-├── notebook.ipynb
-├── README.md
-├── requirements.txt
-└── url.txt
+- Proyek
+  - dashboard
+    - dashboardd.py
+    - day_cleaned.csv
+    - hour_cleaned.csv
+  - data
+    - day_csv
+    - hour.csv
+  - notebook.ipynb
+  - README.md
+  - requirements.txt
+  - url.txt
+
 
 
