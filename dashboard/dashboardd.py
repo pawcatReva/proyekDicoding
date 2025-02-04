@@ -6,8 +6,8 @@ import numpy as np
 import datetime
 
 # Load dataset
-day_df = pd.read_csv(r"dashboard\day_cleaned.csv")
-hour_df = pd.read_csv(r"dashboard\hour_cleaned.csv")
+day_df = pd.read_csv(r"dashboard/day_cleaned.csv")
+hour_df = pd.read_csv(r"dashboard/hour_cleaned.csv")
 
 # Sidebar Navigasi
 with st.sidebar:
