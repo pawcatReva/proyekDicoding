@@ -26,7 +26,7 @@
 ```
 📂 Proyek
 ├── 📁 dashboard
-│   ├── dashboard.py
+│   ├── dashboardd.py
 │   ├── day_cleaned.csv
 │   ├── hour_cleaned.csv
 ├── 📁 data
