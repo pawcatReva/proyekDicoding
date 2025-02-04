@@ -4,6 +4,7 @@
   The bike sharing system is a new generation of traditional bicycle rental where the entire process starts from membership, rental and return.
   Therefore, it is expected to be the most important thing events in the city can be detected through monitoring this data.
   ## Dataset
+    The following data sets were analyzed, including:
   - instant: record index
   - dteday : date
   -  season : season (1:springer, 2:summer, 3:fall, 4:winter)
@@ -55,11 +56,25 @@ In this project I use Python version 3.13.1 and use several libraries as follows
 
 You can install all dependencies using the ```requirements.txt``` file by running the command:
  ```
- pipreqs C:\coding\proyek
+ pipenv install
+ pipreqs C:\coding\proyekDicoding
+ pip install -r requirements.txt
 ```
 
 ## Running the Dashboard
 1. Clone Repository
 ```
 git clone https://github.com/pawcatReva/proyekDicoding.git
+cd proyekDicoding
 ```
+2. Run the Streamlit dashboard:
+```
+streamlit run C:\coding\proyekDicoding\dashboard\dashboardd.py
+```
+
+## Conclusion
+1. Bicycle use is higher on weekdays compared to holidays.
+2. Weekdays have a higher borrowing trend, possibly due to use as a daily means of transportation.
+3. Season affects the number of bicycles borrowed, with highest use in summer/fall and lowest in winter.
+4. Bicycle borrowing patterns increase during peak hours (07:00-09:00 & 17:00-19:00) which indicates use for work purposes.
+5. RFM analysis shows that most of the borrowing occurred recently, and there is a repeat usage pattern from regular users. RFM Analysis shows that the majority of users are still active, but there is a segment that rarely uses this service, which could be a target for promotional strategies.

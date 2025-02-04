@@ -75,18 +75,44 @@ elif selected_page == "Pertanyaan 2":
 
 elif selected_page == "Pertanyaan 3":
     st.title("Bagaimana pola penggunaan sepeda pada musim-musim tertentu?")
+
+    # Filter dataset berdasarkan cuaca (khusus untuk Pertanyaan 3)
+    weather_options = {
+    1: "Cerah / Cerah Sebagian",
+    2: "Berkabut + Berawan",
+    3: "Salju / Hujan Ringan",
+    4: "Hujan Lebat / Badai"
+}
+    selected_weather = st.sidebar.selectbox(
+        "Pilih Kondisi Cuaca:",
+        options=[0] + list(weather_options.keys()),  # 0 untuk 'Semua Cuaca'
+        format_func=lambda x: "Semua Cuaca" if x == 0 else weather_options[x]
+    )
+
+    if selected_weather != 0:
+        day_df_filtered = day_df[day_df['weathersit'] == selected_weather]
+    else:
+        day_df_filtered = day_df
+
+    # Visualisasi dengan dataset yang sudah difilter
     plt.figure(figsize=(10,6))
-    sns.barplot(x='season', y='cnt', hue='season', data=day_df, palette='Set2', legend=False)
-    plt.title('Pola Penggunaan Sepeda Berdasarkan Musim')
+    sns.barplot(x='season', y='cnt', hue='season', data=day_df_filtered, palette='Set2', legend=False)
+    plt.title(f'Pola Penggunaan Sepeda Berdasarkan Musim ({weather_options.get(selected_weather, "Semua Cuaca")})')
     plt.xlabel('Musim')
     plt.ylabel('Jumlah Peminjaman Sepeda')
     plt.xticks(ticks=range(4), labels=['Musim Semi', 'Musim Panas', 'Musim Gugur', 'Musim Dingin'])
     st.pyplot(plt)
-    st.markdown("""
-     **3. Bagaimana pola penggunaan sepeda pada musim-musim tertentu?**
-    - Cuaca memiliki pengaruh besar terhadap peminjaman sepeda. Musim panas dan gugur adalah periode puncak penggunaan sepeda.
-    - Sedangkan musim dingin mengalami penurunan signifikan, dikarenakan suhu cuaca sangat dingin untuk beraktivitas dan jalan tertutup dengan salju (jika turun salju).
-                """)
+
+    # Insight dengan kondisi cuaca yang dipilih
+    st.markdown(f"""
+     **Bagaimana pola penggunaan sepeda pada musim-musim tertentu dalam kondisi cuaca tertentu?**
+    - **Cuaca yang dipilih:** {weather_options.get(selected_weather, 'Semua Cuaca')}
+    - Cuaca memiliki pengaruh besar terhadap peminjaman sepeda. 
+    - **Musim panas dan gugur** cenderung memiliki peminjaman tertinggi.
+    - **Musim dingin mengalami penurunan signifikan**, terutama jika cuaca buruk seperti hujan lebat atau salju.
+    - **Hujan lebat/badai** Jika dataset diambil dari daerah dengan hujan ekstrem, peminjaman sepeda bisa turun drastis atau tidak ada sama sekali.
+    Orang lebih memilih transportasi yang tertutup seperti mobil, bus dan lainnya, atau orang memilih untuk tetap di rumah.
+    """)
 
 elif selected_page == "Pertanyaan 4":
     st.title("Waktu (jam) dengan peminjaman tertinggi berdasarkan jam?")
