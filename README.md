@@ -53,5 +53,8 @@ In this project I use Python version 3.13.1 and use several libraries as follows
 - seaborn==0.13.2
 - streamlit==1.41.1
 
+You can install all dependencies using the ```requirements.txt 
+``` file by running the command:
+
 
 
