@@ -1,8 +1,1 @@
 https://revalina-bike-sharing-data-set.streamlit.app/
-
-weather_options = {
-    1: "Cerah / Cerah Sebagian",
-    2: "Berkabut + Berawan",
-    3: "Salju / Hujan Ringan",
-    4: "Hujan Lebat / Badai"
-}
