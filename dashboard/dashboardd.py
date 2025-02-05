@@ -133,9 +133,21 @@ elif selected_page == "Analisis Data":
 elif selected_page == "Kesimpulan":
     st.title("Kesimpulan")
     st.markdown("""
-    - **Penggunaan sepeda lebih tinggi pada hari kerja dibandingkan hari libur.**
-    - **Hari kerja memiliki tren peminjaman lebih tinggi** karena digunakan untuk transportasi harian.
-    - **Musim mempengaruhi jumlah peminjaman sepeda**, dengan peminjaman tertinggi pada musim panas/gugur.
-    - **Peminjaman meningkat pada jam sibuk (07:00-09:00 & 17:00-19:00)** menunjukkan penggunaan untuk bekerja.
-    - **Segmentasi pengguna membantu memahami pola penggunaan dan strategi promosi.**
+    **1. Perbandingan Penggunaan Sepeda pada Hari Libur dan Tidak Libur.**
+    - Hari Kerja (Tidak Libur): Penggunaan sepeda lebih tinggi pada hari kerja. Sepeda digunakan sebagai alat transportasi utama untuk perjalanan menuju tempat kerja, dengan volume peminjaman yang cenderung lebih tinggi.
+    - Hari Libur: Pada hari libur, jumlah peminjaman cenderung lebih rendah. Ini mungkin karena banyak orang memilih untuk beristirahat di rumah atau menggunakan moda transportasi lain saat berlibur.\n
+    **2. Pola Penggunaan Sepeda pada Hari-Hari Tertentu**
+    - Pada hari kerja, terutama di jam-jam sibuk pagi (07:00-09:00) dan sore (17:00-19:00), peminjaman sepeda cenderung tinggi karena banyak orang menggunakannya untuk perjalanan ke dan dari tempat kerja.
+    - Pada hari libur, penggunaan sepeda cenderung lebih terdistribusi sepanjang hari tanpa puncak penggunaan yang signifikan. Pengguna lebih cenderung menggunakan sepeda untuk kegiatan santai, berolahraga, atau berwisata.\n
+    **3.Pola Penggunaan Sepeda pada Musim-Musim Tertentu.**
+    - Musim Panas dan Gugur: Jumlah peminjaman sepeda paling tinggi selama musim panas dan gugur, di mana cuaca cenderung lebih bersahabat untuk bersepeda. Musim ini mendukung aktivitas luar ruangan, sehingga orang lebih cenderung memilih sepeda.
+    - Musim Semi dan Dingin: Pada musim semi (Spring) yang cenderung lebih sejuk atau cuaca dingin pada waktu tertentu, 
+      peminjaman sepeda dapat menurun karena cuaca yang tidak selalu nyaman untuk bersepeda. Pada cuaca dingin atau hujan, orang lebih memilih menggunakan transportasi tertutup atau memilih untuk tetap di rumah.\n
+    **4. Waktu (Jam) dengan Peminjaman Tertinggi Berdasarkan Jam**
+    - Peminjaman sepeda mencapai puncaknya pada jam sibuk antara pukul 07:00-09:00 dan 17:00-19:00. Ini menunjukkan pola penggunaan sepeda yang terkait langsung dengan perjalanan menuju dan pulang dari tempat kerja atau aktivitas rutin lainnya.\n
+    **Segmentasi Pengguna Sepeda dengan Clustering Manual**
+    - Segmentasi pengguna sepeda didasarkan pada jumlah peminjaman yang dapat disesuaikan menggunakan filter di dashboard. Filter ini memungkinkan untuk memilih rentang jumlah peminjaman tertentu, yang secara otomatis membagi pengguna menjadi kategori:
+      - Pengguna Rendah: Peminjaman sepeda di bawah nilai yang ditentukan (misalnya < 1.000 peminjaman).
+      - Pengguna Sedang: Peminjaman sepeda dalam rentang tertentu (misalnya antara 1.000 hingga 4.000 peminjaman).
+      - Pengguna Tinggi: Peminjaman sepeda di atas nilai yang ditentukan (misalnya > 4.500 peminjaman).
     """)
