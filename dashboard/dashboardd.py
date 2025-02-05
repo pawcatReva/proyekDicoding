@@ -3,172 +3,139 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-import datetime
 
-# Load dataset
-day_df = pd.read_csv(r"dashboard/day_cleaned.csv")
-hour_df = pd.read_csv(r"dashboard/hour_cleaned.csv")
+def load_data():
+    day_df = pd.read_csv("dashboard/day_cleaned.csv")
+    hour_df = pd.read_csv("dashboard/hour_cleaned.csv")
+    day_df['dteday'] = pd.to_datetime(day_df['dteday'])
+    return day_df, hour_df
+
+day_df, hour_df = load_data()
 
 # Sidebar Navigasi
 with st.sidebar:
     st.title("Bike Sharing Data Set")
-    
     selected_page = st.selectbox(
         label="Navigasi",
-        options=('Beranda', 'Data Set', 'Pertanyaan 1', 'Pertanyaan 2', 'Pertanyaan 3', 'Pertanyaan 4', 'RFM Analysis', 'Kesimpulan')
+        options=('Beranda', 'Analisis Data', 'Kesimpulan')
     )
 
-# **Tampilkan Konten Berdasarkan Navigasi**
+# Halaman Beranda
 if selected_page == "Beranda":
     st.title("Analisis Data: Bike Sharing Data Set")
-    
-    st.markdown( """
-    **Pertanyaan Bisnis:**  
-    1. Bagaimana perbandingan Penggunaan Sepeda pada Hari Libur dan Tidak Libur?
-    2. Bagaimana pola penggunaan sepeda pada hari-hari tertentu?  
-    3. Bagaimana pola penggunaan sepeda pada musim-musim tertentu?  
-    4. Waktu (jam) dengan peminjaman tertinggi berdasarkan jam?
-    5. Bagaimana segmentasi peminjaman menggunakan RFM Analysis?
-    """)
-
-elif selected_page == "Data Set":
-    st.title("Data Set Bike Sharing")
-    st.subheader("Day Dataset")
+    st.subheader("Dataset Bike Sharing")
+    st.subheader("Day")
     st.dataframe(day_df.head())
-    st.subheader("Deskripsi Data")
-    st.write(day_df.describe())
-
-    st.subheader("Hour Dataset")
+    st.subheader("Hour")
     st.dataframe(hour_df.head())
-    st.subheader("Deskripsi Data")
-    st.write(hour_df.describe())
-
-elif selected_page == "Pertanyaan 1":
-    st.title("Bagaimana perbandingan Penggunaan Sepeda pada Hari Libur dan Tidak Libur?")
+    st.subheader("Pertanyaan Bisnis")
+    st.markdown("""
+    1. Bagaimana perbandingan Penggunaan Sepeda pada Hari Libur dan Tidak Libur?
+    2. Bagaimana pola penggunaan sepeda pada hari-hari tertentu?
+    3. Bagaimana pola penggunaan sepeda pada musim-musim tertentu?
+    4. Waktu (jam) dengan peminjaman tertinggi berdasarkan jam?
     
-    plt.figure(figsize=(10,6))
-    sns.boxplot(x='holiday', y='cnt', data=day_df)
-    plt.title('Perbandingan Penggunaan Sepeda pada Hari Libur vs Bukan Libur')
-    plt.xlabel('Hari Libur (1 = Ya, 0 = Tidak)')
-    plt.ylabel('Jumlah Peminjaman Sepeda')
-    st.pyplot(plt)
-    st.markdown("""
-     **1. Bagaimana perbandingan Penggunaan Sepeda pada Hari Libur dan Tidak Libur?**
-        - Penggunaan sepeda cenderung lebih rendah pada hari libur, kemungkinan karena banyak orang tidak bepergian ke kantor/sekolah.
-        - Sedangkan data menunjukkan data lebih meningkat di hari kerja/biasa dikarenakan aktivitas berjalan di hari kerja/hari biasa.
-                """)
-
-elif selected_page == "Pertanyaan 2":
-    st.title("Bagaimana pola penggunaan sepeda pada hari-hari tertentu?")
-    plt.figure(figsize=(10,6))
-    sns.barplot(x='weekday', y='cnt', hue='weekday', data=day_df, palette='viridis', legend=False)
-    plt.title('Pola Penggunaan Sepeda Berdasarkan Hari dalam Minggu')
-    plt.xlabel('Hari dalam Minggu')
-    plt.ylabel('Jumlah Peminjaman Sepeda')
-    plt.xticks(ticks=range(7), labels=['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'])
-    st.pyplot(plt)
-    st.markdown("""
-                **2. Bagaimana pola penggunaan sepeda pada hari-hari tertentu?**
-       - Penggunaan sepeda lebih tinggi pada hari kerja, kemungkinan besar karena digunakan sebagai transportasi harian saat pergi bekerja/aktivitas.
-       - Akhir pekan menunjukkan penurunan, bisa jadi karena banyak orang lebih memilih kendaraan pribadi, aktivitas lain atau hanya diam dirumah/tidak kemana-mana.
-                """)
-
-elif selected_page == "Pertanyaan 3":
-    st.title("Bagaimana pola penggunaan sepeda pada musim-musim tertentu?")
-
-    # Filter dataset berdasarkan cuaca (khusus untuk Pertanyaan 3)
-    weather_options = {
-    1: "Cerah / Cerah Sebagian",
-    2: "Berkabut + Berawan",
-    3: "Salju / Hujan Ringan",
-    4: "Hujan Lebat / Badai"
-}
-    selected_weather = st.sidebar.selectbox(
-        "Pilih Kondisi Cuaca:",
-        options=[0] + list(weather_options.keys()),  # 0 untuk 'Semua Cuaca'
-        format_func=lambda x: "Semua Cuaca" if x == 0 else weather_options[x]
-    )
-
-    if selected_weather != 0:
-        day_df_filtered = day_df[day_df['weathersit'] == selected_weather]
-    else:
-        day_df_filtered = day_df
-
-    # Visualisasi dengan dataset yang sudah difilter
-    plt.figure(figsize=(10,6))
-    sns.barplot(x='season', y='cnt', hue='season', data=day_df_filtered, palette='Set2', legend=False)
-    plt.title(f'Pola Penggunaan Sepeda Berdasarkan Musim ({weather_options.get(selected_weather, "Semua Cuaca")})')
-    plt.xlabel('Musim')
-    plt.ylabel('Jumlah Peminjaman Sepeda')
-    plt.xticks(ticks=range(4), labels=['Musim Semi', 'Musim Panas', 'Musim Gugur', 'Musim Dingin'])
-    st.pyplot(plt)
-
-    # Insight dengan kondisi cuaca yang dipilih
-    st.markdown(f"""
-     **Bagaimana pola penggunaan sepeda pada musim-musim tertentu dalam kondisi cuaca tertentu?**
-    - **Cuaca yang dipilih:** {weather_options.get(selected_weather, 'Semua Cuaca')}
-    - Cuaca memiliki pengaruh besar terhadap peminjaman sepeda. 
-    - **Musim panas dan gugur** cenderung memiliki peminjaman tertinggi.
-    - **Musim dingin mengalami penurunan signifikan**, terutama jika cuaca buruk seperti hujan lebat atau salju.
-    - **Hujan lebat/badai** Jika dataset diambil dari daerah dengan hujan ekstrem, peminjaman sepeda bisa turun drastis atau tidak ada sama sekali.
-    Orang lebih memilih transportasi yang tertutup seperti mobil, bus dan lainnya, atau orang memilih untuk tetap di rumah.
+    **Pendekatan Clustering Manual**
+    - Segmentasi pengguna berdasarkan jumlah peminjaman sepeda.
     """)
 
-elif selected_page == "Pertanyaan 4":
-    st.title("Waktu (jam) dengan peminjaman tertinggi berdasarkan jam?")
-    plt.figure(figsize=(12,6))
-    sns.histplot(hour_df, x='hr', weights='cnt', bins=24, kde=True, color='blue')
-    plt.title("Distribusi Peminjaman Sepeda Berdasarkan Jam", fontsize=14)
-    plt.xlabel("Jam (0-23)", fontsize=12)
-    plt.ylabel("Jumlah Peminjaman Sepeda", fontsize=12)
-    st.pyplot(plt)
-    st.markdown("""
-        **4. Waktu (jam) dengan peminjaman tertinggi berdasarkan jam?**
-       - Dari visualisasi histplot distribusi peminjaman sepeda berdasarkan jam (hour_df), terlihat bahwa peminjaman tertinggi terjadi pada jam sibuk (sekitar pagi dan sore hari).
-       - Puncak peminjaman biasanya terjadi pada jam 07:00 - 09:00 pagi (perjalanan ke kantor/sekolah) dan 17:00 - 19:00 sore (perjalanan pulang kerja).
-       - Hal ini mengindikasikan bahwa sepeda lebih sering digunakan sebagai alat transportasi harian dibandingkan rekreasi.
-                """)
+elif selected_page == "Analisis Data":
+    st.title("Analisis Data Bike Sharing")
+    
+    # Sidebar untuk filtering
+    types_of_day = st.sidebar.multiselect("Pilih Hari Libur/Non-Libur:", [0, 1], default=[0, 1], format_func=lambda x: "Hari Libur" if x == 1 else "Hari Biasa")
+    seasons = st.sidebar.multiselect("Pilih Musim:", [1, 2, 3, 4], default=[1, 2, 3, 4], format_func=lambda x: ["Musim Semi", "Musim Panas", "Musim Gugur", "Musim Dingin"][x-1])
+    weather_options = {1: "Cerah", 2: "Berkabut", 3: "Hujan Ringan", 4: "Badai"}
+    selected_weather = st.sidebar.multiselect("Pilih Kondisi Cuaca:", list(weather_options.keys()), default=list(weather_options.keys()), format_func=lambda x: weather_options[x])
+    
+    day_df_filtered = day_df[(day_df['holiday'].isin(types_of_day)) & (day_df['season'].isin(seasons)) & (day_df['weathersit'].isin(selected_weather))]
+    
+    question = st.selectbox("Pilih Pertanyaan untuk Analisis:", [
+        "Perbandingan Penggunaan Sepeda pada Hari Libur vs Non-Libur",
+        "Pola Penggunaan Sepeda Berdasarkan Hari dalam Minggu",
+        "Pola Penggunaan Sepeda Berdasarkan Musim",
+        "Waktu dengan Peminjaman Tertinggi Berdasarkan Jam"
+    ])
+    
+    if question == "Perbandingan Penggunaan Sepeda pada Hari Libur vs Non-Libur":
+        st.subheader("Perbandingan Penggunaan Sepeda pada Hari Libur vs Non-Libur")
+        plt.figure(figsize=(10,6))
+        sns.boxplot(x='holiday', y='cnt', data=day_df_filtered)
+        st.pyplot(plt)
+        st.markdown("""
+        **Bagaimana perbandingan Penggunaan Sepeda pada Hari Libur dan Tidak Libur?**
+        - Penggunaan sepeda cenderung lebih rendah pada hari libur.
+        - Penggunaan lebih tinggi pada hari kerja karena aktivitas normal berjalan.
+        """)
+    
+    elif question == "Pola Penggunaan Sepeda Berdasarkan Hari dalam Minggu":
+        st.subheader("Pola Penggunaan Sepeda Berdasarkan Hari dalam Minggu")
+        plt.figure(figsize=(10,6))
+        sns.barplot(x='weekday', y='cnt', hue='weekday', data=day_df_filtered, palette='viridis', legend=False)
+        st.pyplot(plt)
+        st.markdown("""
+        **Bagaimana pola penggunaan sepeda pada hari-hari tertentu?**
+        - Penggunaan lebih tinggi pada hari kerja.
+        - Akhir pekan menunjukkan penurunan karena alternatif transportasi lain.
+        """)
+    
+    elif question == "Pola Penggunaan Sepeda Berdasarkan Musim":
+        st.subheader("Pola Penggunaan Sepeda Berdasarkan Musim")
+        plt.figure(figsize=(10,6))
+        sns.barplot(x='season', y='cnt', hue='season', data=day_df_filtered, palette='Set2', legend=False)
+        st.pyplot(plt)
+        st.markdown("""
+        **Bagaimana pola penggunaan sepeda pada musim-musim tertentu?**
+        - Musim panas dan gugur memiliki peminjaman tertinggi.
+        - Musim semi dan musim dingin mengalami penurunan signifikan.
+        """)
 
-elif selected_page == "RFM Analysis":
-    st.title("RFM Analysis pada Peminjaman Sepeda")
+    elif question == "Waktu dengan Peminjaman Tertinggi Berdasarkan Jam":
+        st.subheader("Waktu dengan Peminjaman Tertinggi Berdasarkan Jam")
+        plt.figure(figsize=(10,6))
+        sns.histplot(hour_df, x='hr', weights='cnt', bins=24, kde=True, color='blue')
+        plt.xlabel("Jam")
+        plt.ylabel("Jumlah Peminjaman")
+        plt.xticks(range(0, 24))  # Menampilkan semua jam (0-23)
+        st.pyplot(plt)
+        st.markdown("""
+        **Waktu (jam) dengan peminjaman tertinggi?**
+        - Peminjaman meningkat pada jam sibuk pagi (07:00-09:00) dan sore (17:00-19:00).
+        - Ini menunjukkan penggunaan sepeda untuk transportasi kerja atau sekolah.
+        - Garis melengkung menunjukkan distribusi peminjaman lebih halus.
+        """)
     
-    # Konversi tanggal
-    day_df['dteday'] = pd.to_datetime(day_df['dteday'])
-    latest_date = day_df['dteday'].max()
+    # Clustering Manual untuk Segmentasi Pengguna
+    st.subheader("Segmentasi Pengguna Sepeda dengan Clustering Manual")
     
-    # Hitung Recency, Frequency, dan Monetary
-    rfm_df = day_df.groupby('dteday').agg({
-        'cnt': ['sum', 'count']
-    }).reset_index()
+    def categorize_users(cnt):
+        if cnt < 1000:
+            return "Pengguna Rendah"
+        elif 1000 <= cnt < 4000:
+            return "Pengguna Sedang"
+        else:
+            return "Pengguna Tinggi"
     
-    rfm_df.columns = ['Tanggal', 'Monetary', 'Frequency']
-    rfm_df['Recency'] = (latest_date - rfm_df['Tanggal']).dt.days
-    
-    st.subheader("Hasil RFM Analysis")
-    st.dataframe(rfm_df.head())
+    day_df_filtered['User Category'] = day_df_filtered['cnt'].apply(categorize_users)
+    st.dataframe(day_df_filtered[['dteday', 'cnt', 'User Category']].head())
     
     plt.figure(figsize=(10,6))
-    sns.scatterplot(x='Recency', y='Monetary', size='Frequency', sizes=(20, 200), data=rfm_df, alpha=0.7)
-    plt.title("Analisis RFM pada Peminjaman Sepeda")
-    plt.xlabel("Recency (Hari Sejak Peminjaman Terakhir)")
-    plt.ylabel("Total Peminjaman (Monetary)")
+    sns.boxplot(x='User Category', y='cnt', data=day_df_filtered, palette='coolwarm')
     st.pyplot(plt)
     st.markdown("""
-    1. **Recency (Seberapa Baru Transaksi Terakhir?)**: Semakin kecil nilai recency, semakin baru seseorang terakhir kali menggunakan layanan peminjaman sepeda.
-  Banyak pelanggan yang masih aktif menggunakan layanan secara reguler.
-  2. **Frequency (Seberapa Sering Peminjaman Dilakukan?)**: Sebagian besar pengguna hanya meminjam beberapa kali dalam seminggu.
-  Ada kelompok pelanggan dengan frekuensi tinggi, kemungkinan pekerja atau pelanggan tetap.
- 3. **Monetary (Total Peminjaman yang Dilakukan)**: Pengguna dengan monetary tinggi berarti sering menggunakan layanan sepeda dalam jumlah besar.
-  Dari scatterplot, terlihat bahwa pelanggan dengan recency rendah (baru-baru ini meminjam) memiliki monetary yang cukup tinggi.
-                """)
+    **Kesimpulan dari Clustering Manual:**
+    - Pengguna sepeda dikelompokkan ke dalam tiga kategori.
+    - **Pengguna Rendah**: Meminjam secara sporadis.
+    - **Pengguna Sedang**: Cukup rutin menggunakan sepeda.
+    - **Pengguna Tinggi**: Sangat sering menggunakan sepeda.
+    """)
 
 elif selected_page == "Kesimpulan":
     st.title("Kesimpulan")
     st.markdown("""
     - **Penggunaan sepeda lebih tinggi pada hari kerja dibandingkan hari libur.**
-    - **Hari kerja memiliki tren peminjaman yang lebih tinggi**, kemungkinan karena digunakan sebagai alat transportasi harian.
-    - **Musim mempengaruhi jumlah peminjaman sepeda**, dengan penggunaan tertinggi pada musim panas/gugur dan terendah pada musim dingin.
-    - **Pola peminjaman sepeda meningkat pada jam sibuk (07:00-09:00 & 17:00-19:00)** yang menunjukkan penggunaan untuk keperluan kerja.
-    - **Analisis RFM menunjukkan bahwa sebagian besar peminjaman terjadi baru-baru ini**, dan ada pola penggunaan berulang dari pengguna reguler.
-    - **RFM Analysis menunjukkan bahwa sebagian besar pengguna masih aktif,** tetapi ada segmen yang jarang menggunakan layanan ini, yang bisa menjadi target untuk strategi promosi.
+    - **Hari kerja memiliki tren peminjaman lebih tinggi** karena digunakan untuk transportasi harian.
+    - **Musim mempengaruhi jumlah peminjaman sepeda**, dengan peminjaman tertinggi pada musim panas/gugur.
+    - **Peminjaman meningkat pada jam sibuk (07:00-09:00 & 17:00-19:00)** menunjukkan penggunaan untuk bekerja.
+    - **Segmentasi pengguna membantu memahami pola penggunaan dan strategi promosi.**
     """)
